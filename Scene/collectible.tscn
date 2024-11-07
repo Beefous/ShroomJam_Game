@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://c16xjmwoohnsq"]
+
+[ext_resource type="Script" path="res://Code/Collectible.gd" id="1_dyylg"]
+[ext_resource type="Texture2D" uid="uid://cs5fsmk4s3yu1" path="res://Art/chip.png" id="2_oamtg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5u2yj"]
+
+[node name="Collectible" type="Area2D"]
+script = ExtResource("1_dyylg")
+
+[node name="MeshInstance2D" type="Sprite2D" parent="."]
+position = Vector2(-8.9407e-07, 2.02656e-06)
+texture = ExtResource("2_oamtg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5u2yj")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

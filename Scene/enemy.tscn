@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://rxrmy77myb60"]
+
+[ext_resource type="Script" path="res://Code/Enemy.gd" id="1_shqbb"]
+[ext_resource type="Texture2D" uid="uid://dfh3aywpv5bn5" path="res://Art/hourglass.png" id="2_0dd1k"]
+[ext_resource type="AudioStream" uid="uid://br1gutaatb6bu" path="res://Sounds/Kill.wav" id="2_q7vin"]
+[ext_resource type="Shader" path="res://Scene/straight jorkin my peanits.gdshader" id="4_anqpm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d4i0x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ak3y0"]
+shader = ExtResource("4_anqpm")
+shader_parameter/resolution = Vector2(16, 16)
+shader_parameter/noise = 0.178
+shader_parameter/distort = 1.0
+shader_parameter/offset = 0.416
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r4kwt"]
+radius = 12.0
+
+[sub_resource type="Gradient" id="Gradient_j60ij"]
+offsets = PackedFloat32Array(0, 0.503311, 1)
+colors = PackedColorArray(0.742612, 0, 0.133068, 1, 0.999997, 0.367348, 0.389703, 1, 1, 0.387377, 0.324754, 0)
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("1_shqbb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d4i0x")
+
+[node name="MeshInstance2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ak3y0")
+rotation = 1.5708
+texture = ExtResource("2_0dd1k")
+
+[node name="AreaDetector" type="Area2D" parent="."]
+rotation = 2.0944
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDetector"]
+shape = SubResource("CircleShape2D_r4kwt")
+
+[node name="Kill" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fract_delta = false
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 110.0
+angular_velocity_max = 360.0
+linear_accel_min = -200.0
+linear_accel_max = -200.0
+scale_amount_min = 5.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_j60ij")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="Kill"]
+stream = ExtResource("2_q7vin")
+
+[connection signal="body_entered" from="AreaDetector" to="." method="_on_area_detector_body_entered"]
