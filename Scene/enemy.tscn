@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Code/Enemy.gd" id="1_shqbb"]
 [ext_resource type="Texture2D" uid="uid://dfh3aywpv5bn5" path="res://Art/hourglass.png" id="2_0dd1k"]
 [ext_resource type="AudioStream" uid="uid://br1gutaatb6bu" path="res://Sounds/Kill.wav" id="2_q7vin"]
-[ext_resource type="Shader" path="res://Scene/straight jorkin my peanits.gdshader" id="4_anqpm"]
+[ext_resource type="Shader" path="res://Code/straight jorkin my peanits.gdshader" id="4_anqpm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d4i0x"]
 
@@ -23,8 +23,11 @@ colors = PackedColorArray(0.742612, 0, 0.133068, 1, 0.999997, 0.367348, 0.389703
 
 [node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 2
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_shqbb")
+speed = 80.0
+health = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_d4i0x")

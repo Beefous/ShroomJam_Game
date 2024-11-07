@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Code/Enemy.gd" id="1_yp0fj"]
 [ext_resource type="Texture2D" uid="uid://chfwjj7vu65aq" path="res://Art/error.png" id="2_cu41x"]
 [ext_resource type="AudioStream" uid="uid://br1gutaatb6bu" path="res://Sounds/Kill.wav" id="2_yv81f"]
-[ext_resource type="Shader" path="res://Scene/straight jorkin my peanits.gdshader" id="4_gb2ba"]
+[ext_resource type="Shader" path="res://Code/straight jorkin my peanits.gdshader" id="4_gb2ba"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d4i0x"]
 
@@ -22,12 +22,13 @@ offsets = PackedFloat32Array(0, 0.503311, 1)
 colors = PackedColorArray(0.742612, 0, 0.133068, 1, 0.999997, 0.367348, 0.389703, 1, 1, 0.387377, 0.324754, 0)
 
 [node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
-scale = Vector2(2, 2)
 collision_layer = 2
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_yp0fj")
-speed = 45.0
-health = 5
+effects_corruption = true
+speed = 40.0
+health = 3
 score_value = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,8 +1,9 @@
 extends CharacterBody2D
 
 const SPEED = 150.0
+var speed_mult = 1.0
 @export var Bullet: PackedScene
-@onready var Camera = get_node("Camera2D")
+@onready var Camera = get_node_or_null("Camera2D")
 @export var fire_rate = 0.2
 var actual_rate = 0.2
 var timer = 0
@@ -17,15 +18,15 @@ var power_timer = 0
 var health_current
 
 
-# controls the player's movement when they die.
-var die: bool = false
+# blocks the player's movement when they die.
+var is_dead: bool = false
+
+var is_dodging: bool = false
+var dodge_cd = .2
+var dodge_timer = 0.0
 
 func _ready():
-	# I have no idea why this makes the camera do that thing, but this is cool!
-	Camera.set("position", Vector2(100, 0))
-	
 	health_current = health_max
-	
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 func _physics_process(delta):
@@ -47,19 +48,22 @@ func _physics_process(delta):
 	velocity.y = 0
 	
 	# Stop doing things if you are dead, Respawn on 
-	if die == true:
+	if is_dead == true:
 		if Input.get_action_raw_strength("Respawn"):
 			Respawn()
 		return
 	
 	var overlapping_bodies = $hitbox.get_overlapping_bodies()
-	var damage_rate = 25.0
+	var damage_rate = 15.0
 	
-	if overlapping_bodies.size() > 0: 
+	if overlapping_bodies.size() > 0 and not is_dodging: 
 		health_current -= damage_rate * overlapping_bodies.size() * delta
 		if health_current <= 0:
 			Die()
 	
+	if dodge_timer < dodge_cd:
+		dodge_timer += delta
+	else: is_dodging = false
 	
 	# if the player isn't dead...
 	if Input.get_action_raw_strength("Shoot") && timer >= actual_rate:
@@ -71,14 +75,23 @@ func _physics_process(delta):
 		# These statements below handle camera shake
 		Camera.set("offset", Vector2(randf_range(-4, 4), randf_range(-4, 4)))
 		timer = 0
+	if Input.is_action_just_pressed("dodge") and is_dodging == false:
+		is_dodging = true
+		dodge_timer = 0
+		print('dodgeing')
+	
 	else:
 		Camera.set("offset", Vector2(0, 0))
 	# movement is handled like this
+	
+	speed_mult = 3.0 if is_dodging == true else 1.0
+	
 	if direction_x:
-		velocity.x = direction_x * SPEED
+		velocity.x = direction_x * SPEED * speed_mult
 	if direction_y:
-		velocity.y = direction_y * SPEED
-		
+		velocity.y = direction_y * SPEED * speed_mult
+	
+	
 	# look at mouse
 	$Sprite.look_at(get_global_mouse_position())
 	
@@ -91,13 +104,14 @@ func Die():
 	self.get_node("Sprite").set("visible", false)
 	#Stop Camera and set player to death
 	Camera.set("position", Vector2(0, 0))
-	die = true
+	is_dead = true
 	#Wait 1.5 seconds before showing retry screen
 	await get_tree().create_timer(1.5).timeout
 	#Move Camera to center
 	position = Vector2(383,397)
 	#Show Retry Background over whole screen
-	$"../Retry".show()
+	$"../BlueScreen/Retry".show()
+	$"../Wobble".hide()
 	
 # Reload Scene
 func Respawn():

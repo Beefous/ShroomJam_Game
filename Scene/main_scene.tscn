@@ -1,23 +1,66 @@
-[gd_scene load_steps=15 format=3 uid="uid://dyqku4b80noy4"]
+[gd_scene load_steps=35 format=4 uid="uid://dyqku4b80noy4"]
 
 [ext_resource type="Script" path="res://Code/Score Script.gd" id="1_6ltk3"]
 [ext_resource type="PackedScene" uid="uid://bg7rpiubrhh1b" path="res://Scene/character.tscn" id="1_7r2wr"]
-[ext_resource type="Shader" path="res://Scene/background_hatch.gdshader" id="2_inwal"]
+[ext_resource type="Texture2D" uid="uid://cpef8734tpnnh" path="res://Art/Windows_9X_BSOD.png" id="2_4vf5f"]
+[ext_resource type="Shader" path="res://Scene/progress_bar.gdshader" id="2_bm58q"]
+[ext_resource type="Shader" path="res://Code/background_hatch.gdshader" id="2_inwal"]
 [ext_resource type="PackedScene" uid="uid://ct05s8vrgf6io" path="res://Scene/bigger_enemy.tscn" id="3_6oemb"]
 [ext_resource type="Texture2D" uid="uid://bhaqpyt581ygi" path="res://Art/teenyxeenies-tiles.png" id="3_a86g1"]
 [ext_resource type="PackedScene" uid="uid://chluf4qb455d5" path="res://Scene/spawner.tscn" id="3_m5r3x"]
+[ext_resource type="Texture2D" uid="uid://ddncpigb1cdwh" path="res://Art/progress_bar.png" id="3_tsapq"]
+[ext_resource type="Script" path="res://Scene/corruption_meter.gd" id="4_cacbw"]
 [ext_resource type="PackedScene" uid="uid://dqq6h8h061orv" path="res://Scene/spawn_area.tscn" id="5_2hk0k"]
-[ext_resource type="Shader" path="res://Scene/wobble.gdshader" id="8_u6mwp"]
+[ext_resource type="Script" path="res://Scene/wobble.gd" id="8_5ahao"]
+[ext_resource type="Texture2D" uid="uid://chfwjj7vu65aq" path="res://Art/error.png" id="8_puhqe"]
+[ext_resource type="Shader" path="res://Code/wobble.gdshader" id="8_u6mwp"]
+[ext_resource type="Texture2D" uid="uid://bp2dejxmnwy07" path="res://Art/cursor.png" id="9_4f8c1"]
+[ext_resource type="Script" path="res://Code/cursor.gd" id="10_xvdkw"]
+
+[sub_resource type="Gradient" id="Gradient_0o4a2"]
+offsets = PackedFloat32Array(0, 0.532787, 1)
+colors = PackedColorArray(0.56, 0.941333, 1, 1, 0.162, 0.81, 0.3888, 1, 0.316, 0, 0.79, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3rc2y"]
+gradient = SubResource("Gradient_0o4a2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v86mq"]
+shader = ExtResource("2_bm58q")
+shader_parameter/progress = 0.0
+shader_parameter/background_color = Color(0.5, 0.5, 0.5, 0)
+shader_parameter/wave_amplitude = 0.0
+shader_parameter/wave_frequency = 0.0
+shader_parameter/wave_speed = 3.242
+shader_parameter/particle_speed = 0.072
+shader_parameter/particle_lifetime = 4.719
+shader_parameter/particle_softness = 0.001
+shader_parameter/particle_spacing = 0.845
+shader_parameter/particle_offset = Vector2(-0.085, 0)
+shader_parameter/particle_start_scale = Vector2(0.08, 0.5)
+shader_parameter/particle_end_scale = Vector2(0.08, 0.01)
+shader_parameter/particle_scale_randomness = 0.5
+shader_parameter/particle_amount = 50
+shader_parameter/color_gradient = SubResource("GradientTexture1D_3rc2y")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7nxby"]
 shader = ExtResource("2_inwal")
 shader_parameter/speed = 0.001
-shader_parameter/scale = Vector2(8, 8)
+shader_parameter/scale = Vector2(6.4, 4)
 shader_parameter/rotate_speed = 2.805
 shader_parameter/line_width = 0.1
 shader_parameter/line_size = 0.04
 shader_parameter/back_color = Color(0, 0.313726, 0.254902, 1)
 shader_parameter/line_color = Color(0.560784, 0.368627, 0.313726, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kl7n"]
+bg_color = Color(0, 0, 0.666667, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3xhlg"]
+shader = ExtResource("8_u6mwp")
+shader_parameter/ghost = 1.0
+shader_parameter/speed = 1.0
+shader_parameter/giggle = 7.247
+shader_parameter/amplitude = 0.133
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mlf7a"]
 texture = ExtResource("3_a86g1")
@@ -451,68 +494,102 @@ use_texture_padding = false
 
 [sub_resource type="TileSet" id="TileSet_1v0np"]
 tile_size = Vector2i(8, 8)
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "walls"
 terrain_set_0/terrain_0/color = Color(0.415, 0.4745, 0.5, 1)
 sources/1 = SubResource("TileSetAtlasSource_mlf7a")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dsddx"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g08tk"]
+size = Vector2(296, 169)
 
-[sub_resource type="BoxMesh" id="BoxMesh_eii8h"]
-size = Vector3(20, 20, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_drq6k"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(0, 0, 8, 8)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3xhlg"]
-shader = ExtResource("8_u6mwp")
-shader_parameter/ghost = 1.0
-shader_parameter/speed = 0.225
-shader_parameter/giggle = 6.742
-shader_parameter/amplitude = 0.124
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx21e"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ggf"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bynau"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yu08"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(32, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrwud"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(40, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqcjl"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(48, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nldy2"]
+atlas = ExtResource("9_4f8c1")
+region = Rect2(56, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8maoy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drq6k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx21e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ggf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bynau")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yu08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrwud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqcjl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nldy2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [node name="Main Scene" type="Node2D"]
 script = ExtResource("1_6ltk3")
 
-[node name="Retry" type="ColorRect" parent="."]
-visible = false
-top_level = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -62.0
-offset_top = -73.0
-offset_right = 64.0
-offset_bottom = 49.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
+[node name="Hud" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="Retry"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -169.5
-offset_top = -72.5
-offset_right = 155.5
-offset_bottom = -23.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 32
-text = "Press Button to retry"
+[node name="TextureRect" type="TextureRect" parent="Hud"]
+material = SubResource("ShaderMaterial_v86mq")
+offset_left = 26.0
+offset_top = 378.0
+offset_right = 122.0
+offset_bottom = 394.0
+rotation = -1.57079
+scale = Vector2(2, 2)
+texture = ExtResource("3_tsapq")
+script = ExtResource("4_cacbw")
 
-[node name="Background" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -10
 
 [node name="Score" type="Label" parent="Background"]
+visible = false
 top_level = true
-layout_mode = 0
 offset_left = 232.0
 offset_top = 361.0
 offset_right = 320.0
@@ -522,88 +599,49 @@ text = "Score:"
 
 [node name="ColorRect" type="ColorRect" parent="Background"]
 material = SubResource("ShaderMaterial_7nxby")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -13.0
-offset_top = -13.0
-offset_right = 771.0
-offset_bottom = 750.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_1v0np")
+[node name="BlueScreen" type="CanvasLayer" parent="."]
 
-[node name="Character" parent="." instance=ExtResource("1_7r2wr")]
-position = Vector2(383, 397)
-
-[node name="Spawner" parent="." instance=ExtResource("3_m5r3x")]
-position = Vector2(587, 114)
-small_timer_randomization = true
-
-[node name="Spawner2" parent="." instance=ExtResource("3_m5r3x")]
-position = Vector2(142, 646)
-small_timer_randomization = true
-spawn_interval = 4.0
-
-[node name="Spawner3" parent="." instance=ExtResource("3_m5r3x")]
-position = Vector2(129, 80)
-small_timer_randomization = true
-spawn_interval = 2.0
-
-[node name="Spawner4" parent="." instance=ExtResource("3_m5r3x")]
-position = Vector2(732, 729)
-Enemy = ExtResource("3_6oemb")
-
-[node name="Spawn Area" parent="." instance=ExtResource("5_2hk0k")]
-position = Vector2(377, 368)
-
-[node name="Object" type="StaticBody2D" parent="."]
-position = Vector2(833, 401)
-scale = Vector2(2.44, 42.52)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Object"]
-shape = SubResource("RectangleShape2D_dsddx")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Object"]
-mesh = SubResource("BoxMesh_eii8h")
-
-[node name="Object2" type="StaticBody2D" parent="."]
-position = Vector2(-35, 392)
-scale = Vector2(2.44, 42.52)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Object2"]
-shape = SubResource("RectangleShape2D_dsddx")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Object2"]
-mesh = SubResource("BoxMesh_eii8h")
-
-[node name="Object3" type="StaticBody2D" parent="."]
-position = Vector2(401, -42)
-scale = Vector2(41.4994, 3.08347)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Object3"]
-shape = SubResource("RectangleShape2D_dsddx")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Object3"]
-mesh = SubResource("BoxMesh_eii8h")
-
-[node name="Object4" type="StaticBody2D" parent="."]
-position = Vector2(399, 818)
-scale = Vector2(41.4994, 3.08347)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Object4"]
-shape = SubResource("RectangleShape2D_dsddx")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Object4"]
-mesh = SubResource("BoxMesh_eii8h")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Retry" type="TextureRect" parent="BlueScreen"]
 visible = false
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_4vf5f")
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
+[node name="Label" type="Label" parent="BlueScreen/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -163.0
+offset_top = 99.0
+offset_right = 162.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_6kl7n")
+text = "Press Button to retry"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Wobble" type="CanvasLayer" parent="."]
+
+[node name="ColorRect2" type="ColorRect" parent="Wobble"]
+visible = false
 material = SubResource("ShaderMaterial_3xhlg")
 anchors_preset = 15
 anchor_right = 1.0
@@ -614,3 +652,42 @@ offset_right = 7.0
 offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("8_5ahao")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAFABQAAQACAAQAAAAFABsAAQACAAMAAAAGABQAAQACAAIAAAAGABsAAQACAAIAAAAHABQAAQACAAIAAAAHABsAAQACAAIAAAAIABQAAQACAAIAAAAIABsAAQACAAIAAAAJABQAAQACAAIAAAAJABsAAQACAAIAAAAKABQAAQACAAIAAAAKABsAAQACAAIAAAALABQAAQACAAIAAAALABsAAQACAAIAAAAMABQAAQACAAIAAAAMABsAAQACAAIAAAANABEAAQACAAMAAAANABIAAQABAAMAAAANABMAAQABAAMAAAANABQAAQAAAAMAAAANABUAAQABAAQAAAANABoAAQABAAEAAAANABsAAQAAAAMAAAANABwAAQABAAMAAAANAB0AAQABAAMAAAANAB4AAQACAAQAAAAOABEAAQACAAIAAAAOAB4AAQACAAIAAAAPABEAAQACAAIAAAAPAB4AAQACAAIAAAAQABEAAQACAAIAAAAQAB4AAQACAAIAAAARABEAAQACAAIAAAARAB4AAQACAAIAAAASABEAAQACAAIAAAASAB4AAQACAAIAAAATABEAAQACAAIAAAATAB4AAQACAAIAAAAUAAkAAQADAAMAAAAUAAoAAQABAAMAAAAUAAsAAQABAAMAAAAUAAwAAQABAAMAAAAUAA0AAQABAAMAAAAUAA4AAQABAAMAAAAUAA8AAQABAAMAAAAUABAAAQABAAMAAAAUABEAAQACAAIAAAAUAB4AAQACAAEAAAAUAB8AAQABAAMAAAAUACAAAQABAAMAAAAUACEAAQABAAMAAAAUACIAAQABAAMAAAAUACMAAQABAAMAAAAUACQAAQABAAMAAAAUACUAAQABAAMAAAAUACYAAQADAAQAAAAVABEAAQADAAIAAAAVAB4AAQADAAIAAAAaABEAAQAAAAIAAAAaAB4AAQAAAAIAAAAbAAkAAQACAAMAAAAbAAoAAQABAAMAAAAbAAsAAQABAAMAAAAbAAwAAQABAAMAAAAbAA0AAQABAAMAAAAbAA4AAQABAAMAAAAbAA8AAQABAAMAAAAbABAAAQABAAMAAAAbABEAAQACAAIAAAAbAB4AAQABAAIAAAAbAB8AAQABAAMAAAAbACAAAQABAAMAAAAbACEAAQABAAMAAAAbACIAAQABAAMAAAAbACMAAQABAAMAAAAbACQAAQABAAMAAAAbACUAAQABAAMAAAAbACYAAQACAAQAAAAcABEAAQACAAIAAAAcAB4AAQACAAIAAAAeABEAAQACAAIAAAAeAB4AAQACAAIAAAAfABEAAQACAAIAAAAfAB4AAQACAAIAAAAgABEAAQACAAIAAAAgAB4AAQACAAIAAAAhABEAAQACAAIAAAAhAB4AAQACAAIAAAAiABQAAQAAAAQAAAAiABsAAQAAAAQAAAAjABQAAQACAAIAAAAjABsAAQACAAIAAAAkABQAAQACAAIAAAAkABsAAQACAAIAAAAlABQAAQACAAIAAAAlABsAAQACAAIAAAAmABQAAQACAAIAAAAmABsAAQACAAIAAAAnABQAAQACAAIAAAAnABsAAQACAAIAAAAoABQAAQACAAIAAAAoABsAAQACAAIAAAApABQAAQACAAIAAAApABsAAQACAAIAAAAiABEAAQADAAMAAAAiABIAAQABAAMAAAAiABMAAQABAAMAAAAiABUAAQABAAQAAAAiABoAAQABAAEAAAAiABwAAQABAAMAAAAiAB0AAQABAAMAAAAiAB4AAQADAAQAAAAqABQAAQADAAQAAAAqABsAAQADAAMAAAAdAB4AAQACAAIAAAAdABEAAQACAAIAAAAHACYAAQACAAMAAAAIACYAAQACAAIAAAAJACYAAQACAAIAAAAKACYAAQACAAIAAAALACYAAQACAAIAAAAMACYAAQACAAIAAAANACYAAQACAAIAAAAOACYAAQACAAIAAAAPACYAAQACAAIAAAAQACYAAQACAAIAAAARACYAAQACAAIAAAASACYAAQACAAIAAAATACYAAQACAAIAAAAoACYAAQADAAMAAAAnACYAAQACAAIAAAAmACYAAQACAAIAAAAlACYAAQACAAIAAAAkACYAAQACAAIAAAAjACYAAQACAAIAAAAiACYAAQACAAIAAAAhACYAAQACAAIAAAAgACYAAQACAAIAAAAfACYAAQACAAIAAAAeACYAAQACAAIAAAAdACYAAQACAAIAAAAcACYAAQACAAIAAAAoADkAAQADAAQAAAAoADgAAQABAAMAAAAoADcAAQABAAMAAAAoADYAAQABAAMAAAAoADUAAQABAAMAAAAoADQAAQABAAMAAAAoADMAAQABAAMAAAAoADIAAQABAAMAAAAoADEAAQABAAMAAAAoADAAAQABAAMAAAAoAC8AAQABAAMAAAAoAC4AAQABAAMAAAAoAC0AAQABAAMAAAAoACwAAQABAAMAAAAoACsAAQABAAMAAAAoACoAAQABAAMAAAAoACkAAQABAAMAAAAoACgAAQABAAMAAAAoACcAAQABAAMAAAAHADkAAQACAAQAAAAIADkAAQACAAIAAAAJADkAAQACAAIAAAAKADkAAQACAAIAAAALADkAAQACAAIAAAAMADkAAQACAAIAAAANADkAAQACAAIAAAAOADkAAQACAAIAAAAPADkAAQACAAIAAAAQADkAAQACAAIAAAARADkAAQACAAIAAAASADkAAQACAAIAAAATADkAAQACAAIAAAAUADkAAQACAAIAAAAVADkAAQACAAIAAAAWADkAAQACAAIAAAAXADkAAQACAAIAAAAYADkAAQACAAIAAAAZADkAAQACAAIAAAAaADkAAQACAAIAAAAbADkAAQACAAIAAAAcADkAAQACAAIAAAAdADkAAQACAAIAAAAeADkAAQACAAIAAAAfADkAAQACAAIAAAAgADkAAQACAAIAAAAhADkAAQACAAIAAAAiADkAAQACAAIAAAAjADkAAQACAAIAAAAkADkAAQACAAIAAAAlADkAAQACAAIAAAAmADkAAQACAAIAAAAnADkAAQACAAIAAAAHACcAAQABAAMAAAAHACgAAQABAAMAAAAHACkAAQABAAMAAAAHACoAAQABAAMAAAAHACsAAQABAAMAAAAHACwAAQABAAMAAAAHAC0AAQABAAMAAAAHAC4AAQABAAMAAAAHAC8AAQABAAMAAAAHADAAAQABAAMAAAAHADEAAQABAAMAAAAHADIAAQABAAMAAAAHADMAAQABAAMAAAAHADQAAQABAAMAAAAHADUAAQABAAMAAAAHADYAAQABAAMAAAAHADcAAQABAAMAAAAHADgAAQABAAMAAAAFACcAAQADAAQAAAAFACYAAQABAAMAAAAFACUAAQABAAMAAAAFACQAAQABAAMAAAAFACMAAQABAAMAAAAFACIAAQABAAMAAAAFACEAAQABAAMAAAAFACAAAQABAAMAAAAFAB8AAQABAAMAAAAFAB4AAQABAAMAAAAFAB0AAQABAAMAAAAFABwAAQABAAMAAAAqABwAAQABAAMAAAAqAB0AAQABAAMAAAAqAB4AAQABAAMAAAAqAB8AAQABAAMAAAAqACAAAQABAAMAAAAqACEAAQABAAMAAAAqACIAAQABAAMAAAAqACMAAQABAAMAAAAqACQAAQABAAMAAAAqACUAAQABAAMAAAAqACYAAQABAAMAAAAqACcAAQACAAQAAADy/ycAAQACAAQAAADz/ycAAQACAAIAAAD0/ycAAQACAAIAAAD1/ycAAQACAAIAAAD2/ycAAQACAAIAAAD3/ycAAQACAAIAAAD4/ycAAQACAAIAAAD5/ycAAQACAAIAAAD6/ycAAQACAAIAAAD7/ycAAQACAAIAAAD8/ycAAQACAAIAAAD9/ycAAQACAAIAAAD+/ycAAQACAAIAAAD//ycAAQACAAIAAAAAACcAAQACAAIAAAABACcAAQACAAIAAAACACcAAQACAAIAAAADACcAAQACAAIAAAAEACcAAQACAAIAAAAHAAkAAQACAAQAAAAIAAkAAQACAAIAAAAJAAkAAQACAAIAAAAKAAkAAQACAAIAAAALAAkAAQACAAIAAAAMAAkAAQACAAIAAAANAAkAAQACAAIAAAAOAAkAAQACAAIAAAAPAAkAAQACAAIAAAAQAAkAAQACAAIAAAARAAkAAQACAAIAAAASAAkAAQACAAIAAAATAAkAAQACAAIAAAAFABMAAQABAAQAAAAFABIAAQABAAMAAAAFABEAAQABAAMAAAAFABAAAQABAAMAAAAFAA8AAQABAAMAAAAFAA4AAQABAAMAAAAFAA0AAQABAAMAAAAFAAwAAQABAAMAAAAFAAsAAQABAAMAAAAFAAoAAQABAAMAAAAFAAkAAQABAAMAAAAFAAgAAQADAAMAAADy/wgAAQACAAMAAADz/wgAAQACAAIAAAD0/wgAAQACAAIAAAD1/wgAAQACAAIAAAD2/wgAAQACAAIAAAD3/wgAAQACAAIAAAD4/wgAAQACAAIAAAD5/wgAAQACAAIAAAD6/wgAAQACAAIAAAD7/wgAAQACAAIAAAD8/wgAAQACAAIAAAD9/wgAAQACAAIAAAD+/wgAAQACAAIAAAD//wgAAQACAAIAAAAAAAgAAQACAAIAAAABAAgAAQACAAIAAAACAAgAAQACAAIAAAADAAgAAQACAAIAAAAEAAgAAQACAAIAAADy/yYAAQABAAMAAADy/yUAAQABAAMAAADy/yQAAQABAAMAAADy/yMAAQABAAMAAADy/yIAAQABAAMAAADy/yEAAQABAAMAAADy/yAAAQABAAMAAADy/x8AAQABAAMAAADy/x4AAQABAAMAAADy/x0AAQABAAMAAADy/xwAAQABAAMAAADy/xsAAQABAAMAAADy/xoAAQABAAMAAADy/xkAAQABAAMAAADy/xgAAQABAAMAAADy/xcAAQABAAMAAADy/xYAAQABAAMAAADy/xUAAQABAAMAAADy/xQAAQABAAMAAADy/xMAAQABAAMAAADy/xIAAQABAAMAAADy/xEAAQABAAMAAADy/xAAAQABAAMAAADy/w8AAQABAAMAAADy/w4AAQABAAMAAADy/w0AAQABAAMAAADy/wwAAQABAAMAAADy/wsAAQABAAMAAADy/woAAQABAAMAAADy/wkAAQABAAMAAAAoAAkAAQADAAQAAAAnAAkAAQACAAIAAAAmAAkAAQACAAIAAAAlAAkAAQACAAIAAAAkAAkAAQACAAIAAAAjAAkAAQACAAIAAAAiAAkAAQACAAIAAAAhAAkAAQACAAIAAAAgAAkAAQACAAIAAAAfAAkAAQACAAIAAAAeAAkAAQACAAIAAAAdAAkAAQACAAIAAAAcAAkAAQACAAIAAAAqAAgAAQACAAMAAAAqAAkAAQABAAMAAAAqAAoAAQABAAMAAAAqAAsAAQABAAMAAAAqAAwAAQABAAMAAAAqAA0AAQABAAMAAAAqAA4AAQABAAMAAAAqAA8AAQABAAMAAAAqABAAAQABAAMAAAAqABEAAQABAAMAAAAqABIAAQABAAMAAAAqABMAAQABAAMAAAA7AAgAAQADAAMAAAA6AAgAAQACAAIAAAA5AAgAAQACAAIAAAA4AAgAAQACAAIAAAA3AAgAAQACAAIAAAA2AAgAAQACAAIAAAA1AAgAAQACAAIAAAA0AAgAAQACAAIAAAAzAAgAAQACAAIAAAAyAAgAAQACAAIAAAAxAAgAAQACAAIAAAAwAAgAAQACAAIAAAAvAAgAAQACAAIAAAAuAAgAAQACAAIAAAAtAAgAAQACAAIAAAAsAAgAAQACAAIAAAArAAgAAQACAAIAAAA7ACcAAQADAAQAAAA7ACYAAQABAAMAAAA7ACUAAQABAAMAAAA7ACQAAQABAAMAAAA7ACMAAQABAAMAAAA7ACIAAQABAAMAAAA7ACEAAQABAAMAAAA7ACAAAQABAAMAAAA7AB8AAQABAAMAAAA7AB4AAQABAAMAAAA7AB0AAQABAAMAAAA7ABwAAQABAAMAAAA7ABsAAQABAAMAAAA7ABoAAQABAAMAAAA7ABkAAQABAAMAAAA7ABgAAQABAAMAAAA7ABcAAQABAAMAAAA7ABYAAQABAAMAAAA7ABUAAQABAAMAAAA7ABQAAQABAAMAAAA7ABMAAQABAAMAAAA7ABIAAQABAAMAAAA7ABEAAQABAAMAAAA7ABAAAQABAAMAAAA7AA8AAQABAAMAAAA7AA4AAQABAAMAAAA7AA0AAQABAAMAAAA7AAwAAQABAAMAAAA7AAsAAQABAAMAAAA7AAoAAQABAAMAAAA7AAkAAQABAAMAAAArACcAAQACAAIAAAAsACcAAQACAAIAAAAtACcAAQACAAIAAAAuACcAAQACAAIAAAAvACcAAQACAAIAAAAwACcAAQACAAIAAAAxACcAAQACAAIAAAAyACcAAQACAAIAAAAzACcAAQACAAIAAAA0ACcAAQACAAIAAAA1ACcAAQACAAIAAAA2ACcAAQACAAIAAAA3ACcAAQACAAIAAAA4ACcAAQACAAIAAAA5ACcAAQACAAIAAAA6ACcAAQACAAIAAAAHAPf/AQACAAMAAAAHAPj/AQABAAMAAAAHAPn/AQABAAMAAAAHAPr/AQABAAMAAAAHAPv/AQABAAMAAAAHAPz/AQABAAMAAAAHAP3/AQABAAMAAAAHAP7/AQABAAMAAAAHAP//AQABAAMAAAAHAAAAAQABAAMAAAAHAAEAAQABAAMAAAAHAAIAAQABAAMAAAAHAAMAAQABAAMAAAAHAAQAAQABAAMAAAAHAAUAAQABAAMAAAAHAAYAAQABAAMAAAAHAAcAAQABAAMAAAAHAAgAAQABAAQAAAAoAPf/AQADAAMAAAAnAPf/AQACAAIAAAAmAPf/AQACAAIAAAAlAPf/AQACAAIAAAAkAPf/AQACAAIAAAAjAPf/AQACAAIAAAAiAPf/AQACAAIAAAAhAPf/AQACAAIAAAAgAPf/AQACAAIAAAAfAPf/AQACAAIAAAAeAPf/AQACAAIAAAAdAPf/AQACAAIAAAAcAPf/AQACAAIAAAAbAPf/AQACAAIAAAAaAPf/AQACAAIAAAAZAPf/AQACAAIAAAAYAPf/AQACAAIAAAAXAPf/AQACAAIAAAAWAPf/AQACAAIAAAAVAPf/AQACAAIAAAAUAPf/AQACAAIAAAATAPf/AQACAAIAAAASAPf/AQACAAIAAAARAPf/AQACAAIAAAAQAPf/AQACAAIAAAAPAPf/AQACAAIAAAAOAPf/AQACAAIAAAANAPf/AQACAAIAAAAMAPf/AQACAAIAAAALAPf/AQACAAIAAAAKAPf/AQACAAIAAAAJAPf/AQACAAIAAAAIAPf/AQACAAIAAAAoAAgAAQABAAMAAAAoAAcAAQABAAMAAAAoAAYAAQABAAMAAAAoAAUAAQABAAMAAAAoAAQAAQABAAMAAAAoAAMAAQABAAMAAAAoAAIAAQABAAMAAAAoAAEAAQABAAMAAAAoAAAAAQABAAMAAAAoAP//AQABAAMAAAAoAP7/AQABAAMAAAAoAP3/AQABAAMAAAAoAPz/AQABAAMAAAAoAPv/AQABAAMAAAAoAPr/AQABAAMAAAAoAPn/AQABAAMAAAAoAPj/AQABAAMAAAA=")
+tile_set = SubResource("TileSet_1v0np")
+
+[node name="Character" parent="." instance=ExtResource("1_7r2wr")]
+position = Vector2(383, 397)
+
+[node name="Spawner" parent="." instance=ExtResource("3_m5r3x")]
+position = Vector2(799, 380)
+small_timer_randomization = true
+
+[node name="Spawner2" parent="." instance=ExtResource("3_m5r3x")]
+position = Vector2(-79, 385)
+small_timer_randomization = true
+spawn_interval = 4.0
+
+[node name="Spawner4" parent="." instance=ExtResource("3_m5r3x")]
+position = Vector2(387, 798)
+Enemy = ExtResource("3_6oemb")
+Sprite = ExtResource("8_puhqe")
+
+[node name="Spawn Area" parent="." instance=ExtResource("5_2hk0k")]
+position = Vector2(377, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spawn Area"]
+position = Vector2(6, 14.5)
+shape = SubResource("RectangleShape2D_g08tk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_8maoy")
+autoplay = "default"
+frame_progress = 0.2108
+script = ExtResource("10_xvdkw")
+
+[editable path="Spawn Area"]

@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@export var effects_corruption = false
 @export_group("Stats")
 @export var speed = 100.0
 @export var health: int = 1
@@ -14,6 +15,9 @@ var player
 @export var score_value = 1
 
 func _ready():
+	if effects_corruption:
+		CorruptionStats.enemies += 1
+	#print(CorruptionStats.enemies)
 	if absolute_parent.get_node_or_null(player_name) != null:
 		player = absolute_parent.get_node(player_name)
 		
@@ -44,3 +48,7 @@ func hit():
 		get_node("Kill").reparent(get_parent().get_parent())
 		self.queue_free()
 		
+
+func _exit_tree():
+	if effects_corruption:
+		CorruptionStats.enemies -= 1

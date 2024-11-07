@@ -1,6 +1,7 @@
 extends Marker2D
 
 @export var Enemy: PackedScene
+@export var Sprite: Texture2D
 @export var small_timer_randomization: bool = false
 
 @export var spawn_interval = 2.5
@@ -8,6 +9,8 @@ var actual_spawn_interval = spawn_interval
 var timer = 0
 
 func _ready():
+	$MeshInstance2D.texture = Sprite
+	
 	if small_timer_randomization == true:
 		actual_spawn_interval = spawn_interval + randf_range(-0.75, 0.75)
 
