@@ -33,12 +33,14 @@ func _on_body_entered(body):
 
 # make the bullet disappear with a poof :D
 func poof():
+	$Node2D.hide()
 	get_node("Poof").set_emitting(true)
 	get_node("Poof/Sound").play()
 	await get_node('Poof').finished
 	self.queue_free()
 
 func hit():
+	$Node2D.hide()
 	get_node("Hit").set_emitting(true)
 	get_node("Hit/Sound").play()
 	await get_node('Hit').finished

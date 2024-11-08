@@ -14,7 +14,6 @@ colors = PackedColorArray(1, 0.027451, 0.184314, 1, 1, 0.469127, 0.475816, 0)
 [node name="Bullet" type="Area2D"]
 collision_layer = 2
 collision_mask = 2
-monitorable = false
 script = ExtResource("1_5vplj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

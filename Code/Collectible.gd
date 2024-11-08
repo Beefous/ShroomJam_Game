@@ -4,6 +4,7 @@ extends Area2D
 
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
+		CorruptionStats.enemy_threshold += .2
 		body.health_max += 1
 		body.health_current = min(body.health_current + 5, body.health_max)
 		self.queue_free()

@@ -1,6 +1,6 @@
 extends Node
 
-var enemy_threshold = 25.0
+var enemy_threshold = 3.0
 var enemies = 0.0
 
 func get_corruption_progress():
