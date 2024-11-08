@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://dyqku4b80noy4"]
+[gd_scene load_steps=36 format=4 uid="uid://dyqku4b80noy4"]
 
 [ext_resource type="Script" path="res://Code/Score Script.gd" id="1_6ltk3"]
 [ext_resource type="PackedScene" uid="uid://bg7rpiubrhh1b" path="res://Scene/character.tscn" id="1_7r2wr"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ddncpigb1cdwh" path="res://Art/progress_bar.png" id="3_tsapq"]
 [ext_resource type="Script" path="res://Scene/corruption_meter.gd" id="4_cacbw"]
 [ext_resource type="PackedScene" uid="uid://dqq6h8h061orv" path="res://Scene/spawn_area.tscn" id="5_2hk0k"]
+[ext_resource type="FontFile" uid="uid://4avwtjachv4o" path="res://Art/BIOSfontII.ttf" id="7_xgueq"]
 [ext_resource type="Script" path="res://Scene/wobble.gd" id="8_5ahao"]
 [ext_resource type="Texture2D" uid="uid://chfwjj7vu65aq" path="res://Art/error.png" id="8_puhqe"]
 [ext_resource type="Shader" path="res://Code/wobble.gdshader" id="8_u6mwp"]
@@ -608,7 +609,6 @@ grow_vertical = 2
 [node name="BlueScreen" type="CanvasLayer" parent="."]
 
 [node name="Retry" type="TextureRect" parent="BlueScreen"]
-visible = false
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -632,10 +632,30 @@ offset_right = 162.0
 offset_bottom = 148.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_xgueq")
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_6kl7n")
 text = "Press Button to retry"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BlueScreen/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -281.0
+offset_top = 56.0
+offset_right = 44.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_xgueq")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_6kl7n")
+text = "Press Button to retry"
 vertical_alignment = 1
 
 [node name="Wobble" type="CanvasLayer" parent="."]

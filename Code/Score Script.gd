@@ -4,6 +4,8 @@ extends Node2D
 
 var Score = 0
 var Coin = 0
+@onready var retry_label = $BlueScreen/Retry/Label
+@onready var retry_label_2 = $BlueScreen/Retry/Label2
 
 func _ready():
 	#Hide Retry UI on Start
@@ -13,9 +15,8 @@ func _ready():
 	var respawn_event = respawn_events[0]
 	var button_name = OS.get_keycode_string(respawn_event.physical_keycode)
 	#Update Label to use mapping name
-	var retry_label = $BlueScreen/Retry/Label
 	retry_label.text = "Press " + button_name + " to retry"
 
 func _process(_delta):
 	# This can always be changed.
-	Background.get_node("Score").set("text", "Score: " + str(Score) + "\nCoins: " + str(Coin))
+	retry_label_2.text = "Error: " + str(Score) + "Virus : " + str(Coin) + "RAM"
