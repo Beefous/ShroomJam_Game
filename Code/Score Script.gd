@@ -19,4 +19,4 @@ func _ready():
 
 func _process(_delta):
 	# This can always be changed.
-	retry_label_2.text = "Error: " + str(Score) + "Virus : " + str(Coin) + "RAM"
+	retry_label_2.text = "Error: SCORE : " + str(Score) + "Virus : " + str(Coin) + "bRAM"

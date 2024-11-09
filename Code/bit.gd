@@ -1,6 +1,8 @@
 extends Area2D
 
-const SPEED = 800.0
+var bullet = false
+
+const SPEED = 400.0
 var area_direction = Vector2(0, 0)
 var debounce = false
 
@@ -10,13 +12,13 @@ var distance_traveled: float
 
 func _ready():
 	get_node("Poof/Sound").play()
+	$AnimatedSprite2D.play("new_animation")
 
 func _process(delta):
-	$Node2D/MeshInstance2D.rotation = area_direction.angle()
 	self.translate(area_direction * SPEED * delta)
 	distance_traveled += SPEED * delta
 	
-	if distance_traveled >= max_distance:
+	if distance_traveled >= max_distance and bullet:
 		self.queue_free()
 
 func _on_body_entered(body):
@@ -24,26 +26,24 @@ func _on_body_entered(body):
 	if debounce == true:
 		return
 	debounce = true
-	# make sure walls aren't destroyed!
+	
 	if body.is_in_group("Enemy"):
-		if body.effects_corruption == false:
+		if body.effects_corruption:
 			body.hit()
 			self.hit()
-		else:
-			poof()
 	else:
 		poof()
 
 # make the bullet disappear with a poof :D
 func poof():
-	$Node2D.hide()
+	$AnimatedSprite2D.hide()
 	get_node("Poof").set_emitting(true)
 	#get_node("Poof/Sound").play()
 	await get_node('Poof').finished
 	self.queue_free()
 
 func hit():
-	$Node2D.hide()
+	$AnimatedSprite2D.hide()
 	get_node("Hit").set_emitting(true)
 	get_node("Hit/Sound").play()
 	await get_node('Hit').finished

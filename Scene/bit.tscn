@@ -1,0 +1,121 @@
+[gd_scene load_steps=14 format=3 uid="uid://bwrtwbwupjx11"]
+
+[ext_resource type="Script" path="res://Code/bit.gd" id="1_j33vk"]
+[ext_resource type="Texture2D" uid="uid://dcev5dt72utd7" path="res://Art/bits.png" id="2_ek5be"]
+[ext_resource type="AudioStream" uid="uid://dj06uhupptb62" path="res://Sounds/Poof.wav" id="2_i6066"]
+[ext_resource type="AudioStream" uid="uid://cx0ephjs8ndcy" path="res://Sounds/Hit.wav" id="3_kp6ck"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p6mcr"]
+size = Vector2(8, 8)
+
+[sub_resource type="Gradient" id="Gradient_dr773"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uajai"]
+atlas = ExtResource("2_ek5be")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ory6c"]
+atlas = ExtResource("2_ek5be")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iyk5r"]
+atlas = ExtResource("2_ek5be")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j602r"]
+atlas = ExtResource("2_ek5be")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldlxh"]
+atlas = ExtResource("2_ek5be")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmo81"]
+atlas = ExtResource("2_ek5be")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7u5su"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uajai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ory6c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iyk5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j602r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 15.0,
+"texture": SubResource("AtlasTexture_ldlxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmo81")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 16.0
+}]
+
+[node name="bit" type="Area2D" groups=["Bit"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_j33vk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_p6mcr")
+
+[node name="Poof" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 4
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+fract_delta = false
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+angular_velocity_max = 360.0
+scale_amount_min = 5.0
+scale_amount_max = 5.0
+color_ramp = SubResource("Gradient_dr773")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="Poof"]
+stream = ExtResource("2_i6066")
+
+[node name="Hit" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 4
+lifetime = 0.25
+explosiveness = 1.0
+fract_delta = false
+local_coords = true
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 60.0
+initial_velocity_max = 120.0
+angular_velocity_max = 360.0
+scale_amount_min = 5.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_dr773")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="Hit"]
+stream = ExtResource("3_kp6ck")
+volume_db = -6.933
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_7u5su")
+animation = &"new_animation"
+frame_progress = 0.767706
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

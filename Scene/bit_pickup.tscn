@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://dh7srobdxg800"]
+
+[ext_resource type="Script" path="res://Code/bit_pickup.gd" id="1_k5uku"]
+[ext_resource type="Texture2D" uid="uid://dcev5dt72utd7" path="res://Art/bits.png" id="2_unagw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mfd3m"]
+size = Vector2(8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uajai"]
+atlas = ExtResource("2_unagw")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ory6c"]
+atlas = ExtResource("2_unagw")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iyk5r"]
+atlas = ExtResource("2_unagw")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j602r"]
+atlas = ExtResource("2_unagw")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldlxh"]
+atlas = ExtResource("2_unagw")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmo81"]
+atlas = ExtResource("2_unagw")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6c5kt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uajai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ory6c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iyk5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j602r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 15.0,
+"texture": SubResource("AtlasTexture_ldlxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmo81")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 16.0
+}]
+
+[node name="bitPickup" type="Area2D"]
+script = ExtResource("1_k5uku")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mfd3m")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6c5kt")
+animation = &"new_animation"
+frame_progress = 0.505491
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

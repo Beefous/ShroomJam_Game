@@ -11,6 +11,12 @@ var timer = 0
 var power = false
 var power_timer = 0
 
+@export var Bit: PackedScene
+var bits = 0
+var temp_rate = 0.5
+var bit_rate = 0.5
+var max_bits = 10
+
 @onready var absolute_parent = get_parent()
 
 #health variables
@@ -31,14 +37,19 @@ func _ready():
 
 func _physics_process(delta):
 	timer += delta
+	
+	bits = min(bits, max_bits)
 	# Power up that you can get :D
 	if power == true:
 		power_timer += delta
-		actual_rate = fire_rate / 2
+		#actual_rate = fire_rate / 2
+		temp_rate = bit_rate / 2.5
+		bits = max_bits
 		if power_timer >= 10:
 			power = false
 	else:
 		actual_rate = fire_rate
+		temp_rate = bit_rate
 		power_timer = 0
 	
 	# Get the input direction and handle the movement/deceleration.
@@ -51,8 +62,11 @@ func _physics_process(delta):
 	if is_dead == true:
 		if Input.get_action_raw_strength("Respawn"):
 			Respawn()
+		if Input.is_action_just_pressed("enter"):
+			get_tree().quit()
 		return
 	
+	# if the player isn't dead...
 	var overlapping_bodies = $hitbox.get_overlapping_bodies()
 	var damage_rate = 15.0
 	
@@ -65,8 +79,7 @@ func _physics_process(delta):
 		dodge_timer += delta
 	else: is_dodging = false
 	
-	# if the player isn't dead...
-	if Input.get_action_raw_strength("Shoot") && timer >= actual_rate:
+	if Input.get_action_raw_strength("Shoot") && timer >= actual_rate and not Input.is_action_pressed('alt shoot'):
 		var temp = Bullet.instantiate()
 		add_sibling(temp)
 		temp.global_position = get_node("Sprite/Sprite/BulletSpawn").get("global_position")
@@ -75,6 +88,18 @@ func _physics_process(delta):
 		# These statements below handle camera shake
 		Camera.set("offset", Vector2(randf_range(-4, 4), randf_range(-4, 4)))
 		timer = 0
+	if Input.is_action_pressed('alt shoot') && timer >= temp_rate and bits > 0 and not Input.get_action_raw_strength("Shoot"):
+		bits -= 1
+		var temp = Bit.instantiate()
+		add_sibling(temp)
+		temp.bullet = true
+		temp.global_position = get_node("Sprite/Sprite/BulletSpawn").get("global_position")
+		# this sets the rotation as to where it will fire
+		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
+		# These statements below handle camera shake
+		Camera.set("offset", Vector2(randf_range(-4, 4), randf_range(-4, 4)))
+		timer = 0
+	
 	if Input.is_action_just_pressed("dodge") and is_dodging == false:
 		is_dodging = true
 		dodge_timer = 0
@@ -116,3 +141,4 @@ func Die():
 # Reload Scene
 func Respawn():
 	get_tree().reload_current_scene()
+	CorruptionStats._ready()

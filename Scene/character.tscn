@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bg7rpiubrhh1b"]
+[gd_scene load_steps=14 format=3 uid="uid://bg7rpiubrhh1b"]
 
 [ext_resource type="Script" path="res://Code/CharacterMovement.gd" id="1_g1m0b"]
 [ext_resource type="PackedScene" uid="uid://c7hm7qkkm1rb0" path="res://Scene/bullet.tscn" id="2_fsq17"]
 [ext_resource type="AudioStream" uid="uid://bant2odl7yq3y" path="res://Sounds/Player_Kill.wav" id="3_3vefl"]
 [ext_resource type="Texture2D" uid="uid://c6af381ich80l" path="res://Art/ship.png" id="3_gxiwv"]
+[ext_resource type="PackedScene" uid="uid://bwrtwbwupjx11" path="res://Scene/bit.tscn" id="3_rji14"]
 [ext_resource type="Script" path="res://Code/health_bar.gd" id="5_ekcck"]
 [ext_resource type="Shader" path="res://Code/crt.gdshader" id="6_v1v1w"]
 
@@ -44,6 +45,7 @@ shader_parameter/pixel_strength = -2.0
 [node name="Character" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_g1m0b")
 Bullet = ExtResource("2_fsq17")
+Bit = ExtResource("3_rji14")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.57079

@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var effects_corruption = false
+@export var drop: PackedScene
 @export var navigation_agent: NavigationAgent2D
 var direction
 var dir_vec: Vector2
@@ -62,9 +63,15 @@ func hit():
 		
 		get_node("Kill").set_emitting(true)
 		get_node("Kill/Sound").play()
-		get_node("Kill").reparent(get_parent().get_parent())
-		self.queue_free()
+		$MeshInstance2D.hide()
+		$CollisionShape2D.set.call_deferred('disabled', true)
+		if not effects_corruption and randf() < .6:
+			var temp = drop.instantiate()
+			temp.global_position = global_position
+			absolute_parent.add_child.call_deferred(temp)
 		
+		await $Kill.finished
+		self.queue_free()
 
 func _exit_tree():
 	if effects_corruption:
