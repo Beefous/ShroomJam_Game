@@ -10,8 +10,6 @@ var power_timer = 0
 @onready var SquareSizeY = get_node("CollisionShape2D").get_shape().get_rect().size.y / 2
 
 func _ready():
-	print(SquareSizeX)
-	print(SquareSizeY)
 	var temp = Coin.instantiate()
 	temp.position = self.position + (Vector2(randi_range(-(SquareSizeX), SquareSizeX), randi_range(-(SquareSizeY), SquareSizeY)))
 	add_sibling.call_deferred(temp)
