@@ -21,11 +21,12 @@ radius = 12.0
 offsets = PackedFloat32Array(0, 0.503311, 1)
 colors = PackedColorArray(0.742612, 0, 0.133068, 1, 0.999997, 0.367348, 0.389703, 1, 1, 0.387377, 0.324754, 0)
 
-[node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("navigation_agent") groups=["Enemy"]]
 collision_layer = 2
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_shqbb")
+navigation_agent = NodePath("NavigationAgent2D")
 speed = 80.0
 health = 2
 
@@ -63,5 +64,7 @@ color_ramp = SubResource("Gradient_j60ij")
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="Kill"]
 stream = ExtResource("2_q7vin")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [connection signal="body_entered" from="AreaDetector" to="." method="_on_area_detector_body_entered"]

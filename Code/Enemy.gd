@@ -1,6 +1,10 @@
 extends CharacterBody2D
 
 @export var effects_corruption = false
+@export var navigation_agent: NavigationAgent2D
+var direction
+var dir_vec: Vector2
+
 @export_group("Stats")
 @export var speed = 100.0
 @export var health: int = 1
@@ -20,15 +24,28 @@ func _ready():
 	#print(CorruptionStats.enemies)
 	if absolute_parent.get_node_or_null(player_name) != null:
 		player = absolute_parent.get_node(player_name)
-		
+
 
 func _process(delta):
+	navigation_agent.target_position = player.global_position
+	if not navigation_agent.is_navigation_finished():
+		var next_path_position: Vector2 = navigation_agent.get_next_path_position()
+		var new_velocity: Vector2 = position.direction_to(next_path_position) * speed
+		dir_vec = position.direction_to(next_path_position)
+		navigation_agent.velocity = new_velocity
+		
+		# Directly set velocity and move
+		velocity = new_velocity
+		
+	else:
+		velocity = Vector2.ZERO
+	
 	# These 3 little lines of code handle movement! Don't ask me why velocity has to be set this way.
 	if player != null:
 		self.look_at(player.get("position"))
-		self.velocity = Vector2(0, 0)
-		self.position.x = move_toward(self.position.x, player.get("position").x, speed * delta)
-		self.position.y = move_toward(self.position.y, player.get("position").y, speed * delta)
+		#self.velocity = Vector2(0, 0)
+		#self.position.x = move_toward(self.position.x, player.get("position").x, speed * delta)
+		#self.position.y = move_toward(self.position.y, player.get("position").y, speed * delta)
 	
 	move_and_slide()
 
