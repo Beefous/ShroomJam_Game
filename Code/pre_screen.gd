@@ -3,6 +3,7 @@ extends CanvasLayer
 var debounce = false
 
 func _ready():
+	show()
 	Engine.time_scale = 0
 
 func _input(event):

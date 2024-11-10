@@ -7,6 +7,7 @@
 [ext_resource type="Shader" path="res://Code/straight jorkin my peanits.gdshader" id="4_anqpm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d4i0x"]
+radius = 9.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ak3y0"]
 shader = ExtResource("4_anqpm")
@@ -68,5 +69,6 @@ color_ramp = SubResource("Gradient_j60ij")
 stream = ExtResource("2_q7vin")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 10.0
 
 [connection signal="body_entered" from="AreaDetector" to="." method="_on_area_detector_body_entered"]

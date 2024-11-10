@@ -7,6 +7,7 @@
 [ext_resource type="Shader" path="res://Code/straight jorkin my peanits.gdshader" id="4_gb2ba"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d4i0x"]
+radius = 9.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4t5ry"]
 shader = ExtResource("4_gb2ba")
@@ -23,21 +24,22 @@ offsets = PackedFloat32Array(0, 0.503311, 1)
 colors = PackedColorArray(0.742612, 0, 0.133068, 1, 0.999997, 0.367348, 0.389703, 1, 1, 0.387377, 0.324754, 0)
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("navigation_agent") groups=["Enemy"]]
-collision_layer = 2
-collision_mask = 3
+collision_layer = 4
+collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_yp0fj")
 effects_corruption = true
 drop = ExtResource("2_2pfcx")
 navigation_agent = NodePath("NavigationAgent2D")
 speed = 40.0
+health = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_d4i0x")
 
 [node name="MeshInstance2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_4t5ry")
-rotation = 1.5708
+position = Vector2(0, -1.575)
 texture = ExtResource("2_cu41x")
 
 [node name="AreaDetector" type="Area2D" parent="."]

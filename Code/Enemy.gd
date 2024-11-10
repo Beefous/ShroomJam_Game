@@ -13,6 +13,7 @@ var dir_vec: Vector2
 @export_group("Player Things")
 @export var player_name = "Character"
 var player
+var area
 # In the main scene, this goes to the very very top node! one node down, there should
 # be the character and the spawners
 @onready var absolute_parent = get_parent()
@@ -20,15 +21,18 @@ var player
 @export var score_value = 1
 
 func _ready():
-	if effects_corruption:
-		CorruptionStats.enemies += 1
+	#if effects_corruption:
+		#CorruptionStats.enemies += 1
 	#print(CorruptionStats.enemies)
 	if absolute_parent.get_node_or_null(player_name) != null:
 		player = absolute_parent.get_node(player_name)
+		area = absolute_parent.get_node("Corruptable Area")
 
 
 func _process(delta):
 	navigation_agent.target_position = player.global_position
+	if effects_corruption:
+		navigation_agent.target_position = area.global_position
 	if not navigation_agent.is_navigation_finished():
 		var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 		var new_velocity: Vector2 = position.direction_to(next_path_position) * speed
@@ -42,7 +46,7 @@ func _process(delta):
 		velocity = Vector2.ZERO
 	
 	# These 3 little lines of code handle movement! Don't ask me why velocity has to be set this way.
-	if player != null:
+	if player != null and not effects_corruption:
 		self.look_at(player.get("position"))
 		#self.velocity = Vector2(0, 0)
 		#self.position.x = move_toward(self.position.x, player.get("position").x, speed * delta)
@@ -74,5 +78,6 @@ func hit():
 		self.queue_free()
 
 func _exit_tree():
-	if effects_corruption:
-		CorruptionStats.enemies -= 1
+	#if effects_corruption:
+		#CorruptionStats.enemies -= 1
+	pass

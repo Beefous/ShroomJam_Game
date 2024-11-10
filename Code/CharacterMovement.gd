@@ -12,7 +12,7 @@ var power = false
 var power_timer = 0
 
 @export var Bit: PackedScene
-var bits = 0
+var bits = 5
 var temp_rate = 0.5
 var bit_rate = 0.5
 var max_bits = 10
@@ -28,12 +28,12 @@ var health_current
 var is_dead: bool = false
 
 var is_dodging: bool = false
-var dodge_cd = .2
+var dodge_cd = .4
 var dodge_timer = 0.0
 
 func _ready():
 	health_current = health_max
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 
 func _physics_process(delta):
 	timer += delta
@@ -42,7 +42,7 @@ func _physics_process(delta):
 	# Power up that you can get :D
 	if power == true:
 		power_timer += delta
-		#actual_rate = fire_rate / 2
+		actual_rate = fire_rate / 2
 		temp_rate = bit_rate / 2.5
 		bits = max_bits
 		if power_timer >= 10:
@@ -86,9 +86,9 @@ func _physics_process(delta):
 		# this sets the rotation as to where it will fire
 		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
 		# These statements below handle camera shake
-		Camera.set("offset", Vector2(randf_range(-4, 4), randf_range(-4, 4)))
+		Camera.set("offset", Vector2(randf_range(-2, 2), randf_range(-2, 2)))
 		timer = 0
-	if Input.is_action_pressed('alt shoot') && timer >= temp_rate and bits > 0 and not Input.get_action_raw_strength("Shoot"):
+	elif Input.is_action_pressed('alt shoot') && timer >= temp_rate and bits > 0:
 		bits -= 1
 		var temp = Bit.instantiate()
 		add_sibling(temp)
@@ -97,19 +97,29 @@ func _physics_process(delta):
 		# this sets the rotation as to where it will fire
 		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
 		# These statements below handle camera shake
-		Camera.set("offset", Vector2(randf_range(-4, 4), randf_range(-4, 4)))
+		Camera.set("offset", Vector2(randf_range(-2, 2), randf_range(-2, 2)))
 		timer = 0
+	else:
+		Camera.set("offset", Vector2(0, 0))
 	
 	if Input.is_action_just_pressed("dodge") and is_dodging == false:
 		is_dodging = true
 		dodge_timer = 0
-		print('dodgeing')
+		#print('dodgeing')
 	
-	else:
-		Camera.set("offset", Vector2(0, 0))
+	if Input.is_action_just_pressed("Respawn"):
+		if Input.mouse_mode == Input.MOUSE_MODE_CONFINED_HIDDEN:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			Engine.time_scale = 0
+			#print('esc pressed')
+		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
+			Engine.time_scale = 1
+			#print('esc pressed')
+	
 	# movement is handled like this
 	
-	speed_mult = 3.0 if is_dodging == true else 1.0
+	speed_mult = 3.0 if is_dodging == true and dodge_timer < .15 else 1.0
 	
 	if direction_x:
 		velocity.x = direction_x * SPEED * speed_mult
@@ -127,6 +137,7 @@ func Die():
 	get_node("Explosive").set_emitting(true)
 	get_node("Explosive/Sound").play()
 	self.get_node("Sprite").set("visible", false)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	#Stop Camera and set player to death
 	Camera.set("position", Vector2(0, 0))
 	is_dead = true

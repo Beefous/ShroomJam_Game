@@ -67,8 +67,8 @@ animations = [{
 }]
 
 [node name="bit" type="Area2D" groups=["Bit"]]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_j33vk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -5,7 +5,7 @@ extends Marker2D
 @export var small_timer_randomization: bool = false
 
 @export var spawn_interval = 2.5
-var actual_spawn_interval = spawn_interval
+@onready var actual_spawn_interval = spawn_interval
 var timer = 0
 
 func _ready():
