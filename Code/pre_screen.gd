@@ -2,6 +2,8 @@ extends CanvasLayer
 
 var debounce = false
 
+signal game_start()
+
 func _ready():
 	show()
 	Engine.time_scale = 0
@@ -17,3 +19,4 @@ func _input(event):
 	$select.play()
 	hide()
 	Engine.time_scale = 1
+	game_start.emit()

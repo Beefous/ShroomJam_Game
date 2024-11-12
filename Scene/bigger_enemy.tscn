@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://ct05s8vrgf6io"]
+[gd_scene load_steps=12 format=3 uid="uid://ct05s8vrgf6io"]
 
 [ext_resource type="Script" path="res://Code/Enemy.gd" id="1_yp0fj"]
 [ext_resource type="PackedScene" uid="uid://bwrtwbwupjx11" path="res://Scene/bit.tscn" id="2_2pfcx"]
 [ext_resource type="Texture2D" uid="uid://chfwjj7vu65aq" path="res://Art/error.png" id="2_cu41x"]
 [ext_resource type="AudioStream" uid="uid://br1gutaatb6bu" path="res://Sounds/Kill.wav" id="2_yv81f"]
 [ext_resource type="Shader" path="res://Code/straight jorkin my peanits.gdshader" id="4_gb2ba"]
+[ext_resource type="Shader" path="res://Code/enemy.gdshader" id="5_apwh0"]
+[ext_resource type="Texture2D" uid="uid://crnch3vy6clnq" path="res://Art/pixel.png" id="6_k7tjf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d4i0x"]
 radius = 9.0
@@ -19,9 +21,31 @@ shader_parameter/offset = 1.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_r4kwt"]
 radius = 12.0
 
-[sub_resource type="Gradient" id="Gradient_j60ij"]
-offsets = PackedFloat32Array(0, 0.503311, 1)
-colors = PackedColorArray(0.742612, 0, 0.133068, 1, 0.999997, 0.367348, 0.389703, 1, 1, 0.387377, 0.324754, 0)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t14hp"]
+shader = ExtResource("5_apwh0")
+shader_parameter/spread = 360.0
+shader_parameter/inherit_emitter_velocity_ratio = 0.0
+shader_parameter/initial_linear_velocity_min = 10.0
+shader_parameter/initial_linear_velocity_max = 50.0
+shader_parameter/orbit_velocity_min = null
+shader_parameter/orbit_velocity_max = null
+shader_parameter/radial_velocity_min = null
+shader_parameter/radial_velocity_max = null
+shader_parameter/linear_accel_min = null
+shader_parameter/linear_accel_max = null
+shader_parameter/radial_accel_min = null
+shader_parameter/radial_accel_max = null
+shader_parameter/tangent_accel_min = null
+shader_parameter/tangent_accel_max = null
+shader_parameter/damping_min = null
+shader_parameter/damping_max = null
+shader_parameter/scale_min = 1.0
+shader_parameter/scale_max = 1.0
+shader_parameter/lifetime_randomness = null
+shader_parameter/emission_shape_offset = Vector3(0, 0, 0)
+shader_parameter/emission_shape_scale = Vector3(1, 1, 1)
+shader_parameter/emission_box_extents = Vector3(8, 8, 0)
+shader_parameter/sprite = ExtResource("6_k7tjf")
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("navigation_agent") groups=["Enemy"]]
 collision_layer = 4
@@ -47,27 +71,20 @@ texture = ExtResource("2_cu41x")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDetector"]
 shape = SubResource("CircleShape2D_r4kwt")
 
-[node name="Kill" type="CPUParticles2D" parent="."]
+[node name="Kill" type="GPUParticles2D" parent="."]
+self_modulate = Color(1, 0, 0, 1)
+z_index = 10
 emitting = false
-amount = 100
-lifetime = 0.75
+amount = 256
+process_material = SubResource("ShaderMaterial_t14hp")
+texture = ExtResource("6_k7tjf")
 one_shot = true
 explosiveness = 1.0
-fract_delta = false
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 40.0
-initial_velocity_max = 110.0
-angular_velocity_max = 360.0
-linear_accel_min = -200.0
-linear_accel_max = -200.0
-scale_amount_min = 5.0
-scale_amount_max = 8.0
-color_ramp = SubResource("Gradient_j60ij")
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="Kill"]
 stream = ExtResource("2_yv81f")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 10.0
 
 [connection signal="body_entered" from="AreaDetector" to="." method="_on_area_detector_body_entered"]

@@ -5,8 +5,8 @@
 [ext_resource type="AudioStream" uid="uid://dj06uhupptb62" path="res://Sounds/Poof.wav" id="2_i6066"]
 [ext_resource type="AudioStream" uid="uid://cx0ephjs8ndcy" path="res://Sounds/Hit.wav" id="3_kp6ck"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p6mcr"]
-size = Vector2(8, 8)
+[sub_resource type="CircleShape2D" id="CircleShape2D_c1p3m"]
+radius = 4.0
 
 [sub_resource type="Gradient" id="Gradient_dr773"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -72,7 +72,7 @@ collision_mask = 4
 script = ExtResource("1_j33vk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_p6mcr")
+shape = SubResource("CircleShape2D_c1p3m")
 
 [node name="Poof" type="CPUParticles2D" parent="."]
 emitting = false
@@ -86,8 +86,6 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 30.0
 initial_velocity_max = 30.0
 angular_velocity_max = 360.0
-scale_amount_min = 5.0
-scale_amount_max = 5.0
 color_ramp = SubResource("Gradient_dr773")
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="Poof"]
@@ -105,8 +103,6 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 60.0
 initial_velocity_max = 120.0
 angular_velocity_max = 360.0
-scale_amount_min = 5.0
-scale_amount_max = 8.0
 color_ramp = SubResource("Gradient_dr773")
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="Hit"]
@@ -116,6 +112,6 @@ volume_db = -6.933
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_7u5su")
 animation = &"new_animation"
-frame_progress = 0.767706
+frame_progress = 0.758713
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

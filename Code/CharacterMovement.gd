@@ -16,6 +16,7 @@ var bits = 5
 var temp_rate = 0.5
 var bit_rate = 0.5
 var max_bits = 10
+var is_redeeming = false
 
 @onready var absolute_parent = get_parent()
 
@@ -44,7 +45,7 @@ func _physics_process(delta):
 		power_timer += delta
 		actual_rate = fire_rate / 2
 		temp_rate = bit_rate / 2.5
-		bits = max_bits
+		#bits = max_bits
 		if power_timer >= 10:
 			power = false
 	else:
@@ -79,30 +80,11 @@ func _physics_process(delta):
 		dodge_timer += delta
 	else: is_dodging = false
 	
-	if Input.get_action_raw_strength("Shoot") && timer >= actual_rate and not Input.is_action_pressed('alt shoot'):
-		var temp = Bullet.instantiate()
-		add_sibling(temp)
-		temp.global_position = get_node("Sprite/Sprite/BulletSpawn").get("global_position")
-		# this sets the rotation as to where it will fire
-		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
-		# These statements below handle camera shake
-		Camera.set("offset", Vector2(randf_range(-2, 2), randf_range(-2, 2)))
-		timer = 0
-	elif Input.is_action_pressed('alt shoot') && timer >= temp_rate and bits > 0:
-		bits -= 1
-		var temp = Bit.instantiate()
-		add_sibling(temp)
-		temp.bullet = true
-		temp.global_position = get_node("Sprite/Sprite/BulletSpawn").get("global_position")
-		# this sets the rotation as to where it will fire
-		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
-		# These statements below handle camera shake
-		Camera.set("offset", Vector2(randf_range(-2, 2), randf_range(-2, 2)))
-		timer = 0
-	else:
-		Camera.set("offset", Vector2(0, 0))
+	shoot()
 	
-	if Input.is_action_just_pressed("dodge") and is_dodging == false:
+	if Input.is_action_just_pressed("dodge") and is_dodging == false and (bits > 0 or power):
+		if not power:
+			bits -= 1
 		is_dodging = true
 		dodge_timer = 0
 		#print('dodgeing')
@@ -119,7 +101,7 @@ func _physics_process(delta):
 	
 	# movement is handled like this
 	
-	speed_mult = 3.0 if is_dodging == true and dodge_timer < .15 else 1.0
+	speed_mult = 3.0 if is_dodging == true and dodge_timer < dodge_cd / 3 else 1.0
 	
 	if direction_x:
 		velocity.x = direction_x * SPEED * speed_mult
@@ -128,9 +110,43 @@ func _physics_process(delta):
 	
 	
 	# look at mouse
-	$Sprite.look_at(get_global_mouse_position())
+	if Engine.time_scale > 0:
+		$Sprite.look_at(get_global_mouse_position())
 	
 	move_and_slide()
+
+
+func shoot():
+	if Engine.time_scale == 0:
+		return
+	
+	if Input.get_action_raw_strength("Shoot") && timer >= actual_rate and not Input.is_action_pressed('alt shoot'):
+		var temp = Bullet.instantiate()
+		add_sibling(temp)
+		temp.global_position = get_node("Sprite/Sprite/BulletSpawn").get("global_position")
+		# this sets the rotation as to where it will fire
+		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
+		# These statements below handle camera shake
+		Camera.set("offset", Vector2(randf_range(-2, 2), randf_range(-2, 2)))
+		timer = 0
+	elif Input.is_action_pressed('alt shoot') && timer >= temp_rate and (bits > 0 or power):
+		if not power:
+			bits -= 1
+		if is_redeeming and not power:
+			CorruptionStats.bits_redeemed += 1
+			return
+		var temp = Bit.instantiate()
+		add_sibling(temp)
+		temp.bullet = true
+		temp.global_position = get_node("Sprite/Sprite/BulletSpawn").get("global_position")
+		# this sets the rotation as to where it will fire
+		temp.set("area_direction", (get_global_mouse_position() - self.global_position).normalized())
+		# These statements below handle camera shake
+		Camera.set("offset", Vector2(randf_range(-2, 2), randf_range(-2, 2)))
+		timer = 0
+	else:
+		Camera.set("offset", Vector2(0, 0))
+
 
 # all the things that it do when you die.
 func Die():
@@ -140,14 +156,18 @@ func Die():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	#Stop Camera and set player to death
 	Camera.set("position", Vector2(0, 0))
-	is_dead = true
 	#Wait 1.5 seconds before showing retry screen
+	is_dead = true
 	await get_tree().create_timer(1.5).timeout
+	Engine.time_scale = 0
 	#Move Camera to center
 	position = Vector2(383,397)
-	#Show Retry Background over whole screen
-	$"../BlueScreen/Retry".show()
 	$"../Wobble".hide()
+	if CorruptionStats.bits_redeemed >= 100:
+		$"../BlueScreen/Winner".show()
+	else:
+		#Show Retry Background over whole screen
+		$"../BlueScreen/Retry".show()
 	
 # Reload Scene
 func Respawn():

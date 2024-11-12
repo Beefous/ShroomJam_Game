@@ -29,7 +29,7 @@ func _ready():
 		area = absolute_parent.get_node("Corruptable Area")
 
 
-func _process(delta):
+func _process(_delta):
 	navigation_agent.target_position = player.global_position
 	if effects_corruption:
 		navigation_agent.target_position = area.global_position
@@ -54,9 +54,6 @@ func _process(delta):
 	
 	move_and_slide()
 
-#do nothing for now
-func _on_area_detector_body_entered(body):
-	pass
 
 # Get hit, or die.
 func hit():

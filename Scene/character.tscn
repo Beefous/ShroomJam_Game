@@ -1,19 +1,44 @@
-[gd_scene load_steps=14 format=3 uid="uid://bg7rpiubrhh1b"]
+[gd_scene load_steps=16 format=3 uid="uid://bg7rpiubrhh1b"]
 
 [ext_resource type="Script" path="res://Code/CharacterMovement.gd" id="1_g1m0b"]
 [ext_resource type="PackedScene" uid="uid://c7hm7qkkm1rb0" path="res://Scene/bullet.tscn" id="2_fsq17"]
 [ext_resource type="AudioStream" uid="uid://bant2odl7yq3y" path="res://Sounds/Player_Kill.wav" id="3_3vefl"]
 [ext_resource type="Texture2D" uid="uid://c6af381ich80l" path="res://Art/ship.png" id="3_gxiwv"]
 [ext_resource type="PackedScene" uid="uid://bwrtwbwupjx11" path="res://Scene/bit.tscn" id="3_rji14"]
+[ext_resource type="Shader" path="res://Code/enemy.gdshader" id="5_0hhuv"]
 [ext_resource type="Script" path="res://Code/health_bar.gd" id="5_ekcck"]
 [ext_resource type="Shader" path="res://Code/crt.gdshader" id="6_v1v1w"]
+[ext_resource type="Texture2D" uid="uid://crnch3vy6clnq" path="res://Art/pixel.png" id="6_wal3l"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s68e0"]
 radius = 8.0
 height = 24.0
 
-[sub_resource type="Gradient" id="Gradient_mtu4j"]
-colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0, 0)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4vxt4"]
+shader = ExtResource("5_0hhuv")
+shader_parameter/spread = 360.0
+shader_parameter/inherit_emitter_velocity_ratio = 0.0
+shader_parameter/initial_linear_velocity_min = 10.0
+shader_parameter/initial_linear_velocity_max = 50.0
+shader_parameter/orbit_velocity_min = null
+shader_parameter/orbit_velocity_max = null
+shader_parameter/radial_velocity_min = null
+shader_parameter/radial_velocity_max = null
+shader_parameter/linear_accel_min = null
+shader_parameter/linear_accel_max = null
+shader_parameter/radial_accel_min = null
+shader_parameter/radial_accel_max = null
+shader_parameter/tangent_accel_min = null
+shader_parameter/tangent_accel_max = null
+shader_parameter/damping_min = null
+shader_parameter/damping_max = null
+shader_parameter/scale_min = 1.0
+shader_parameter/scale_max = 1.0
+shader_parameter/lifetime_randomness = null
+shader_parameter/emission_shape_offset = Vector3(0, 0, 0)
+shader_parameter/emission_shape_scale = Vector3(1, 1, 1)
+shader_parameter/emission_box_extents = Vector3(8, 8, 0)
+shader_parameter/sprite = ExtResource("6_wal3l")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ro76n"]
 radius = 9.0
@@ -64,19 +89,14 @@ rotation = -1.57079
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
 
-[node name="Explosive" type="CPUParticles2D" parent="."]
+[node name="Explosive" type="GPUParticles2D" parent="."]
 emitting = false
-amount = 450
-lifetime = 2.0
+amount = 256
+process_material = SubResource("ShaderMaterial_4vxt4")
+texture = ExtResource("6_wal3l")
 one_shot = true
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 70.0
-initial_velocity_max = 210.0
-angular_velocity_max = 360.0
-scale_amount_min = 10.0
-scale_amount_max = 15.0
-color_ramp = SubResource("Gradient_mtu4j")
+explosiveness = 1.0
+local_coords = true
 
 [node name="Sound" type="AudioStreamPlayer" parent="Explosive"]
 stream = ExtResource("3_3vefl")

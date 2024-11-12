@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Code/bit_pickup.gd" id="1_k5uku"]
 [ext_resource type="Texture2D" uid="uid://dcev5dt72utd7" path="res://Art/bits.png" id="2_unagw"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mfd3m"]
-size = Vector2(8, 8)
+[sub_resource type="CircleShape2D" id="CircleShape2D_oqkk7"]
+radius = 8.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uajai"]
 atlas = ExtResource("2_unagw")
@@ -65,7 +65,7 @@ animations = [{
 script = ExtResource("1_k5uku")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_mfd3m")
+shape = SubResource("CircleShape2D_oqkk7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6c5kt")
