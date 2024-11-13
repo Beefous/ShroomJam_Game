@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c7hm7qkkm1rb0"]
+[gd_scene load_steps=8 format=3 uid="uid://c7hm7qkkm1rb0"]
 
 [ext_resource type="Script" path="res://Code/Bullet.gd" id="1_5vplj"]
 [ext_resource type="Texture2D" uid="uid://bfnyeh65b4ts7" path="res://Art/bullet.png" id="2_5rw1i"]
 [ext_resource type="AudioStream" uid="uid://dj06uhupptb62" path="res://Sounds/Poof.wav" id="2_negmh"]
+[ext_resource type="Texture2D" uid="uid://crnch3vy6clnq" path="res://Art/pixel.png" id="3_i6ii0"]
 [ext_resource type="AudioStream" uid="uid://cx0ephjs8ndcy" path="res://Sounds/Hit.wav" id="4_3ya8w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ff0mn"]
@@ -26,13 +27,12 @@ lifetime = 0.25
 one_shot = true
 explosiveness = 1.0
 fract_delta = false
+texture = ExtResource("3_i6ii0")
 spread = 180.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 30.0
 initial_velocity_max = 30.0
 angular_velocity_max = 360.0
-scale_amount_min = 5.0
-scale_amount_max = 5.0
 color_ramp = SubResource("Gradient_u8k66")
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="Poof"]
@@ -45,13 +45,12 @@ lifetime = 0.25
 explosiveness = 1.0
 fract_delta = false
 local_coords = true
+texture = ExtResource("3_i6ii0")
 spread = 180.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 60.0
 initial_velocity_max = 120.0
 angular_velocity_max = 360.0
-scale_amount_min = 5.0
-scale_amount_max = 8.0
 color_ramp = SubResource("Gradient_u8k66")
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="Hit"]

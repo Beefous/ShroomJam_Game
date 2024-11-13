@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bwrtwbwupjx11"]
+[gd_scene load_steps=15 format=3 uid="uid://bwrtwbwupjx11"]
 
 [ext_resource type="Script" path="res://Code/bit.gd" id="1_j33vk"]
 [ext_resource type="Texture2D" uid="uid://dcev5dt72utd7" path="res://Art/bits.png" id="2_ek5be"]
 [ext_resource type="AudioStream" uid="uid://dj06uhupptb62" path="res://Sounds/Poof.wav" id="2_i6066"]
+[ext_resource type="Texture2D" uid="uid://crnch3vy6clnq" path="res://Art/pixel.png" id="2_lyilx"]
 [ext_resource type="AudioStream" uid="uid://cx0ephjs8ndcy" path="res://Sounds/Hit.wav" id="3_kp6ck"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c1p3m"]
@@ -81,6 +82,7 @@ lifetime = 0.25
 one_shot = true
 explosiveness = 1.0
 fract_delta = false
+texture = ExtResource("2_lyilx")
 spread = 180.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 30.0
@@ -98,6 +100,7 @@ lifetime = 0.25
 explosiveness = 1.0
 fract_delta = false
 local_coords = true
+texture = ExtResource("2_lyilx")
 spread = 180.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 60.0

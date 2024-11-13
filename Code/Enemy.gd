@@ -47,7 +47,7 @@ func _process(_delta):
 	
 	# These 3 little lines of code handle movement! Don't ask me why velocity has to be set this way.
 	if player != null and not effects_corruption:
-		self.look_at(player.get("position"))
+		self.look_at(navigation_agent.get_next_path_position())
 		#self.velocity = Vector2(0, 0)
 		#self.position.x = move_toward(self.position.x, player.get("position").x, speed * delta)
 		#self.position.y = move_toward(self.position.y, player.get("position").y, speed * delta)

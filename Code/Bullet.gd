@@ -14,8 +14,8 @@ func _ready():
 func _process(delta):
 	$Node2D/MeshInstance2D.rotation = area_direction.angle()
 	self.translate(area_direction * SPEED * delta)
-	distance_traveled += SPEED * delta
-	
+	if not is_queued_for_deletion():
+		distance_traveled += SPEED * delta
 	if distance_traveled >= max_distance:
 		self.queue_free()
 
